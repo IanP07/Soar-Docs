@@ -10,7 +10,8 @@ with positional commands working as quickly as possible, using an FTCLib structu
 
 If you'd like to use an existing codebase with this project, check out the [Soar Library Guide](LibraryGuide.md).
 
-
+Additionally, words highlighted in yellow will link to the [Definitions](definitions.md) page. If you're unsure what a term means,
+feel free to click on it to see the explanation in the definitions page!
 
 ## Installation
 
@@ -29,6 +30,7 @@ Alternatively, run ```git clone https://github.com/IanP07/Soar-Quickstart``` in 
 
 To make sure that this codebase works with every type of robot, some information must be provided in the ```MecanumDrive``` and 
 ```MecanumConstants``` files. 
+
 
 ### Wheel Positions
 
@@ -58,6 +60,9 @@ You will then need to provide values for:
  private double m_maxRobotRotationRps = 6.28;
  private double m_metersPerTick = 0.00056; 
 ```
+
+Definitions: [m_maxRobotSpeedMps](definitions.md#max-robot-speed-mps), [m_maxRobotRotationRps](definitions.md#max-robot-speed-rps), [m_metersPerTick](definitions.md#meters-per-tick)
+
 These are determined through testing. In the ```current/tuning``` directory of the quickstart, find ```forwardDriveTest```. 
 This will run all 4 wheels at 100% power. Make sure that they are named correctly in your driver station 
 configuration, then hit start and record the time it takes to travel a set distance. Then divide the distance 
@@ -106,6 +111,10 @@ Next, open the ```MecanumDrive``` file, and find:
     public double trackWidthCentimeters = 36.3;
     double perpendicularOffsetCentimeters = 20.32;
 ```
+
+Definitions: [m_maxRobotSpeedMps](definitions.md#max-robot-speed-mps), [m_maxRobotRotationRps](definitions.md#max-robot-speed-rps), [m_metersPerTick](definitions.md#meters-per-tick)
+
+
 
 Set ```deadWheelRadiusCentimeters``` and ```ticksPerRevolution``` as per the product page
 of your odometry pods that you found earlier. Make sure that your deadwheel radius is in
