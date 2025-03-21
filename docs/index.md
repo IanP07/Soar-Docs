@@ -87,7 +87,7 @@ find your odometry pod wheel's resolution and radius in meters via the product p
 formula to get your value. 
 
 Finally, ensure that all of your drive motors are following this naming convention
-in your driverstation config file:
+in your [driverstation config file](definitions.md#driverstation-config-file):
 
 ```java
     private String m_frontLeftName = "fL";

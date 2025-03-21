@@ -42,5 +42,14 @@ The D value dampens movement, meaning when a robot gets close to its target posi
 The I value adds a little "push" to the robot to help it reach its target position, if it is close but not
 quite at the target. 
 
+## Driverstation Config File
+A Driverstation Config File will tell the program what slots on your controlhub/expansion hub
+correspond to what kinds of devices. For example, if you plug in a 117RPM gobilda motor into
+slot 3 of your control hub, you need to specify that in your driverstation config file with
+a name, so that when you call that same name in your code, it knows it's the object plugged
+into slot 3 of the hub. 
 
+For more information on how to set this, see:
+
+<a href=https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/getting_started/getting-started.html>FTC Driverstation Docs</a>
 
