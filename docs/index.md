@@ -143,6 +143,7 @@ Finally, at the top of the MecanumDrive constructor, find:
 
 and replace ```Motor.GoBILDA.RPM_312``` with the RPM of your drive motors. 
 
+
 ## Tuning PIDs
 
 ### Translation Controller 
@@ -181,7 +182,75 @@ undershooting increase it.
 Again adjust ```Rotation I``` as needed, decreasing if movements are overly jerky at the end, 
 and increasing if it doesn't have enough "kick" or power to go to exactly 180 degrees. Then enter the values you end up with
 in the ```MecanumDrive``` file. 
+## GoBilda Odometry Computer Support
 
+This quickstart has support for both odometry driven localization and support for the GoBilda Odometry Computer.
+If you don't know what the GoBilda Odometry Computer is, or you are using deadwheels/encoders/odometry pods,
+feel free to skip this section.
+
+First, scroll down to the 
+```java
+m_odo.updatePose(initialPose);
+//      odo = hardwareMap.get(GoBildaPinpointDriver.class, "odo");
+//      odo.setOffsets(-84.0, -168.0, DistanceUnit.MM);
+//      odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+//      odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+//      odo.setPosition(GOCinitialPose);
+```
+section. Uncomment out all of the lines containig 'odo'. Then, configure: 
+ ```odo.setOffsets(-84.0, -168.0, DistanceUnit.MM);```  
+The first number is distance in millimeters that the X or forward facing odometry pod is from the computer, with left of the center being positive. 
+The second number is distance in millimeters that the Y or strafe odometry pod is, with forward of the center being a positive number. 
+
+Then, for:
+```odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);```
+specificy the type of odometry pods you are using. Some common ones are the goBILDA_SWINGARM_POD, and the goBILDA_4_BAR_POD.
+If you are unsure or are using a differeent pod, replace this line with
+```odo.setEncoderResolution(12.3456, DistanceUnit.MM);```
+replacing '12.3456' with the number of ticks per unit of your odo pod. 
+
+Change this line as needed to make sure your X (forward) pod increases in value when moving robot forward,
+and the Y (strafe) pod increasing when moving the robot to the left.
+
+```odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);```
+
+Now, in the ```periodic()``` function at the bottom of the file, uncomment:
+```java
+//      odo.update();
+```
+
+Lastly, in the ```moveFieldRelativeForPID()``` function, replace `m_robotPose.getX()`, 
+`m_robotPose.getY()` and `normalizedRotationRad` within their respective clamp functions with:
+```odo.getXOffset(DistanceUnit.CM)```, ```odo.getYOffset(DistanceUnit.CM)``` and ```odo.getHeading(AngleUnit.RADIANS)```
+
+
+So, this line:
+```java
+double vOmega = MathUtil.clamp(m_rotationController.calculate(normalizedRotationRad),
+```
+should now become
+
+```java
+double vOmega = MathUtil.clamp(m_rotationController.calculate(odo.getHeading(AngleUnit.RADIANS)),
+
+```
+this line:
+```java
+double vY = MathUtil.clamp(m_translationYController.calculate(m_robotPose.getY()),
+```
+should now become
+```java
+double vY = MathUtil.clamp(m_translationYController.calculate(odo.getXOffset(DistanceUnit.CM)),
+```
+
+and 
+```java
+double vX = MathUtil.clamp(m_translationXController.calculate(m_robotPose.getX()),
+```
+is now:
+```java
+double vX = MathUtil.clamp(m_translationXController.calculate(odo.getYOffset(DistanceUnit.CM)),
+```
 
 ## Teleop Features
 
