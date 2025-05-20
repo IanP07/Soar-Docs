@@ -240,7 +240,7 @@ double vY = MathUtil.clamp(m_translationYController.calculate(m_robotPose.getY()
 ```
 should now become
 ```java
-double vY = MathUtil.clamp(m_translationYController.calculate(odo.getXOffset(DistanceUnit.CM)),
+double vY = MathUtil.clamp(m_translationYController.calculate(odo.getYOffset(DistanceUnit.CM)),
 ```
 
 and 
@@ -249,7 +249,7 @@ double vX = MathUtil.clamp(m_translationXController.calculate(m_robotPose.getX()
 ```
 is now:
 ```java
-double vX = MathUtil.clamp(m_translationXController.calculate(odo.getYOffset(DistanceUnit.CM)),
+double vX = MathUtil.clamp(m_translationXController.calculate(odo.getXOffset(DistanceUnit.CM)),
 ```
 
 ## Teleop Features
